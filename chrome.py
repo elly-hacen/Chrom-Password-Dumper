@@ -6,6 +6,7 @@ import sqlite3
 import win32crypt
 from Crypto.Cipher import AES
 from datetime import datetime, timedelta
+from win32ctypes.pywin32 import pywintypes
 
 
 
@@ -34,10 +35,10 @@ def decrypt_password(password, key):
         password = password[15:]
         cipher = AES.new(key, AES.MODE_GCM, iv)
         return cipher.decrypt(password)[:-16].decode()
-    except:
+    except UnicodeDecodeError:
         try:
             return str(win32crypt.CryptUnprotectData(password, None, None, None, 0)[1])
-        except:
+        except pywintypes.error:
             return ""
 
 
