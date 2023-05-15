@@ -49,20 +49,24 @@ def main():
     filename = "temp.db"
     shutil.copyfile(db_path, filename)
     
-    with sqlite3.connect(filename) as db, open('temp.txt', 'w') as f:
-        cursor = db.cursor()
-        cursor.execute("SELECT origin_url, username_value, password_value, date_created FROM logins")
-        for row in cursor.fetchall():
-            origin_url, username_value, password_value, date_created = row
-            password = decrypt_password(password_value, key)
-            if password:
-                date_created = get_chrome_datetime(date_created / 10**6)
-                f.write(f"Origin URL: {origin_url}\n")
-                f.write(f"Username: {username_value}\n")
-                f.write(f"Password: {password}\n")
-                f.write(f"Created: {date_created}\n\n")
-
-
+    try:
+        with sqlite3.connect(filename) as db, open('temp.txt', 'w') as f:
+            cursor = db.cursor()
+            cursor.execute("SELECT origin_url, username_value, password_value, date_created FROM logins")
+            for row in cursor.fetchall():
+                origin_url, username_value, password_value, date_created = row
+                password = decrypt_password(password_value, key)
+                if password:
+                    date_created = get_chrome_datetime(date_created / 10**6)
+                    f.write(f"Origin URL: {origin_url}\n")
+                    f.write(f"Username: {username_value}\n")
+                    f.write(f"Password: {password}\n")
+                    f.write(f"Created: {date_created}\n\n")
+    except sqlite3.Error as e:
+        print("As error occured:", e)
+    finally:
+        db.close()
+        os.remove(filename)
 
 
 main()
