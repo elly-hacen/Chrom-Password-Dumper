@@ -1,13 +1,13 @@
+import win32crypt
+from Crypto.Cipher import AES
+from win32ctypes.pywin32 import pywintypes
+
 import os
 import json
 import shutil
 import base64
 import sqlite3
-import win32crypt
-from Crypto.Cipher import AES
 from datetime import datetime, timedelta
-from win32ctypes.pywin32 import pywintypes
-
 
 
 def get_chrome_datetime(chromedate):
