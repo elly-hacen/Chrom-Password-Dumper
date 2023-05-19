@@ -7,7 +7,7 @@ This Python script is a tool that can be used to extract saved login credentials
 - Python 3.x
 - Required Python module: `pycryptodome==3.17`
 
-You can install the module using pip: `pip install pycryptodome==3.17`
+You can install the module using pip: `pip install -r requirements.txt`
 
 ## Usage
 
